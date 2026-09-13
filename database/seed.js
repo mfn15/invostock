@@ -29,11 +29,8 @@ const products = [
 
     for (const [sku, name, cat, cost, price, stock] of products) {
       const c = await client.query('SELECT id FROM categories WHERE name=$1', [cat]);
-      const r = await client.query(
-        `INSERT INTO products(sku,name,category_id,cost_price,sale_price) VALUES($1,$2,$3,$4,$5)
-         ON CONFLICT(sku) DO UPDATE SET name=EXCLUDED.name RETURNING id`,
-        [sku, name, c.rows[0].id, cost, price]
-      );
+      const r = await client.query(`INSERT INTO products(sku,name,category_id,cost_price,sale_price) VALUES($1,$2,$3,$4,$5)
+         ON CONFLICT(sku) DO UPDATE SET name=EXCLUDED.name RETURNING id`, [sku, name, c.rows[0].id, cost, price]);
       await client.query(
         `INSERT INTO inventory(product_id,stock_quantity) VALUES($1,$2) ON CONFLICT(product_id) DO NOTHING`,
         [r.rows[0].id, stock]
