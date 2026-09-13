@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvoStock -- Billing &amp; Inventory</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div id="login-screen" class="screen">
+  <form id="login-form" class="login-card">
+    <h1>InvoStock</h1>
+    <p class="subtitle">Billing &amp; Inventory Management</p>
+    <input id="login-username" type="text" placeholder="Username" autocomplete="username" required>
+    <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required>
+    <button type="submit">Log In</button>
+    <p id="login-error" class="error-text"></p>
+    <p class="hint">Demo: admin / admin123 or staff / staff123</p>
+  </form>
+</div>
+
+<div id="app-screen" class="screen" hidden>
+  <nav class="sidebar">
+    <h2>InvoStock</h2>
+    <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+    <button class="nav-btn" data-view="invoices">Invoices</button>
+    <button class="nav-btn" data-view="new-invoice">New Invoice</button>
+    <button class="nav-btn" data-view="products">Products</button>
+    <button class="nav-btn" data-view="customers">Customers</button>
+    <button class="nav-btn" data-view="reports">Reports</button>
+    <div class="sidebar-footer">
+      <span id="current-user-name"></span>
+      <button id="logout-btn">Log Out</button>
+    </div>
+  </nav>
+
+  <main class="content">
+    <section id="view-dashboard" class="view active">
+      <h1>Dashboard</h1>
+      <div class="stat-grid">
+        <div class="stat-card"><span class="stat-label">Today's Invoices</span><span id="stat-invoices" class="stat-value">0</span></div>
+        <div class="stat-card"><span class="stat-label">Today's Revenue</span><span id="stat-revenue" class="stat-value">$0</span></div>
+        <div class="stat-card"><span class="stat-label">Outstanding Balance</span><span id="stat-outstanding" class="stat-value">$0</span></div>
+      </div>
+      <h2>Low Stock Alerts</h2>
+      <table class="data-table"><thead><tr><th>Product</th><th>Stock</th><th>Reorder Level</th></tr></thead><tbody id="low-stock-body"></tbody></table>
+    </section>
+
+    <section id="view-invoices" class="view">
+      <h1>Invoices</h1>
+      <div class="toolbar">
+        <input id="invoice-search" placeholder="Search invoice #">
+        <select id="invoice-status-filter">
+          <option value="">All statuses</option>
+          <option value="unpaid">Unpaid</option>
+          <option value="partial">Partial</option>
+          <option value="paid">Paid</option>
+          <option value="void">Void</option>
+        </select>
+        <button id="invoice-filter-btn">Filter</button>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Invoice #</th><th>Customer</th><th>Total</th><th>Paid</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="invoices-body"></tbody>
+      </table>
+    </section>
+
+    <section id="view-new-invoice" class="view">
+      <h1>New Invoice</h1>
+      <div class="invoice-form">
+        <select id="ni-customer"></select>
+        <div class="product-picker">
+          <select id="ni-product-select"></select>
+          <input id="ni-qty" type="number" min="1" value="1" style="width:80px">
+          <button id="ni-add-item">Add Item</button>
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Line Total</th><th></th></tr></thead>
+          <tbody id="ni-items-body"></tbody>
+        </table>
+        <div class="invoice-totals">
+          <label>Discount <input id="ni-discount" type="number" value="0" min="0"></label>
+          <label>Tax <input id="ni-tax" type="number" value="0" min="0"></label>
+          <label>Amount Paid <input id="ni-paid" type="number" value="0" min="0"></label>
+          <div class="grand-total">Grand Total: $<span id="ni-grand-total">0.00</span></div>
+        </div>
+        <button id="ni-submit" class="primary-btn">Create Invoice</button>
+      </div>
+    </section>
+
+    <section id="view-products" class="view">
+      <h1>Products</h1>
+      <button id="new-product-btn" class="primary-btn">+ New Product</button>
+      <table class="data-table">
+        <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Cost</th><th>Price</th><th>Stock</th></tr></thead>
+        <tbody id="products-body"></tbody>
+      </table>
+    </section>
+
+    <section id="view-customers" class="view">
+      <h1>Customers</h1>
+      <button id="new-customer-btn" class="primary-btn">+ New Customer</button>
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+        <tbody id="customers-body"></tbody>
+      </table>
+    </section>
+
+    <section id="view-reports" class="view">
+      <h1>Reports</h1>
+      <div id="profit-loss-summary" class="stat-grid"></div>
+      <h2>Top Products</h2>
+      <table class="data-table"><thead><tr><th>Product</th><th>Qty Sold</th><th>Revenue</th></tr></thead><tbody id="top-products-body"></tbody></table>
+    </section>
+  </main>
+</div>
+
+<div id="modal-root"></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
